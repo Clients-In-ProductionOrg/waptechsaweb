@@ -657,7 +657,7 @@ export default function IndexNavy() {
                   </Button>
                 </a>
 
-                <a href="mailto:hello@waptechsa.co.za">
+                <a href="mailto:waptechsa@gmail.com">
                   <Button variant="secondary" className="w-full !rounded-xl !py-3 !px-4 !justify-start !text-red-400 !border-red-500/50 hover:!text-red-300 hover:!border-red-400 hover:!bg-red-500/10">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white">
                       <svg viewBox="0 0 24 24" aria-hidden="true" className="w-5 h-5">
@@ -731,11 +731,11 @@ export default function IndexNavy() {
                 </li>
                 <li className="flex items-center gap-4">
                   <Phone className="text-blue-500" />
-                  <span>+27 10 123 4567</span>
+                  <span>+27 655253491</span>
                 </li>
                 <li className="flex items-center gap-4">
                   <Mail className="text-blue-500" />
-                  <span>hello@waptechsa.co.za</span>
+                  <span>waptechsa@gmail.com</span>
                 </li>
               </ul>
             </div>
