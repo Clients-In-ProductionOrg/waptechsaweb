@@ -28,6 +28,7 @@ import goodnessImg from "../assets/TeamImages/Goodness Jakaza Chauke.jpeg";
 import trustImg from "../assets/TeamImages/Trust Nyoni .jpeg";
 import mmaphokengImg from "../assets/TeamImages/Mmaphokeng Senne(IT Sales).jpg";
 import teamLeaderImg from "../assets/TeamImages/TeamLeader.png";
+import logoImg from "../assets/Logo/WT_logo.jpeg";
 
 import knitImg from "../assets/Projects/knit-logo.png";
 import enashysImg from "../assets/Projects/Ebslogo.png";
@@ -187,7 +188,7 @@ export default function IndexNavy() {
   const [activeTeamIndex, setActiveTeamIndex] = useState(0);
 
   const teamMembers = [
-    { name: "Team Leader", role: "Senior Project Manager", img: teamLeaderImg, align: "object-top" },
+    { name: "Elena Vance", role: "Senior Project Manager", img: teamLeaderImg, align: "object-top" },
     { name: "Mmaphokeng Senne", role: "IT Sales", img: mmaphokengImg, align: "object-[center_20%]" },
     { name: "Defence Ndzhobela", role: "Full Stack Developer", img: defenceImg, align: "object-center" },
     { name: "Trust Nyoni", role: "Business Analyst", img: trustImg, align: "object-top" },
@@ -237,10 +238,12 @@ export default function IndexNavy() {
       {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? "bg-[#0F172A]/90 backdrop-blur-lg shadow-2xl py-4" : "bg-transparent py-6"}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <a href="#hero" onClick={() => scrollToSection("#hero")} className="flex items-center gap-2 group">
-            <div className="bg-gradient-to-br from-blue-600 to-sky-500 p-2 rounded-lg text-white transform group-hover:rotate-12 transition-transform">
-              <Code size={24} />
-            </div>
+          <a href="#hero" onClick={() => scrollToSection("#hero")} className="flex items-center gap-3 group">
+            <img 
+              src={logoImg} 
+              alt="WapTechSA Logo" 
+              className="h-14 w-auto rounded-xl object-cover bg-white/5 backdrop-blur-sm border border-white/10 shadow-lg" 
+            />
             <span className="text-2xl font-bold tracking-tight">WapTech<span className="text-sky-400">SA</span></span>
           </a>
 
@@ -362,7 +365,7 @@ export default function IndexNavy() {
                   className="relative rounded-3xl shadow-2xl border border-slate-700 w-full object-cover h-[500px]"
                 />
                 <div className="absolute -bottom-10 -right-10 bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-xl hidden lg:block">
-                  <div className="text-4xl font-bold text-blue-500 mb-1">6</div>
+                  <div className="text-4xl font-bold text-blue-500 mb-1">6+</div>
                   <div className="text-slate-400 text-sm uppercase tracking-wider">Years Experience</div>
                 </div>
              </div>
