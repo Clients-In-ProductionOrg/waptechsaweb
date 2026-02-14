@@ -13,7 +13,6 @@ import {
   Cpu, 
   Shield, 
   Zap, 
-  MessageSquare, 
   Quote,
   Facebook,
   Twitter,
@@ -183,6 +182,7 @@ const NetworkBackground = () => {
 export default function IndexNavy() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -198,13 +198,29 @@ export default function IndexNavy() {
     { name: "Contact", href: "#contact" },
   ];
 
+  const quickLinks = [
+    { name: "Home", href: "#hero" },
+    { name: "Services", href: "#services" },
+    { name: "Projects", href: "#projects" },
+    { name: "About", href: "#about" },
+    { name: "Contact", href: "#contact" },
+    { name: "Get Started", href: "#contact" },
+  ];
+
+  const scrollToSection = (href) => {
+    const targetSection = document.querySelector(href);
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-50 font-sans overflow-x-hidden selection:bg-blue-500/30">
       
       {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? "bg-[#0F172A]/90 backdrop-blur-lg shadow-2xl py-4" : "bg-transparent py-6"}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <a href="#" className="flex items-center gap-2 group">
+          <a href="#hero" onClick={() => scrollToSection("#hero")} className="flex items-center gap-2 group">
             <div className="bg-gradient-to-br from-blue-600 to-sky-500 p-2 rounded-lg text-white transform group-hover:rotate-12 transition-transform">
               <Code size={24} />
             </div>
@@ -214,11 +230,11 @@ export default function IndexNavy() {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a key={link.name} href={link.href} className="text-sm font-medium text-slate-300 hover:text-white hover:text-shadow-glow transition-all">
+              <a key={link.name} href={link.href} onClick={() => scrollToSection(link.href)} className="text-sm font-medium text-slate-300 hover:text-white hover:text-shadow-glow transition-all">
                 {link.name}
               </a>
             ))}
-            <Button variant="primary" className="!py-2 !px-6 !text-sm">Get Started</Button>
+            <Button variant="primary" className="!py-2 !px-6 !text-sm" onClick={() => scrollToSection("#contact")}>Get Started</Button>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -242,11 +258,20 @@ export default function IndexNavy() {
                     key={link.name} 
                     href={link.href} 
                     className="text-lg font-medium text-slate-300 py-2 border-b border-slate-800"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      scrollToSection(link.href);
+                    }}
                   >
                     {link.name}
                   </a>
                 ))}
+                <Button variant="primary" className="w-full mt-2" onClick={() => {
+                  setMobileMenuOpen(false);
+                  scrollToSection("#contact");
+                }}>
+                  Get Started
+                </Button>
               </div>
             </motion.div>
           )}
@@ -293,8 +318,8 @@ export default function IndexNavy() {
               We create scalable, modern, and professional web & app solutions designed to elevate your business in the digital age.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button icon={ArrowRight}>View Projects</Button>
-              <Button variant="secondary" icon={Mail}>Contact Us</Button>
+              <Button icon={ArrowRight} onClick={() => scrollToSection("#projects")}>View Projects</Button>
+              <Button variant="secondary" icon={Mail} onClick={() => scrollToSection("#contact")}>Contact Us</Button>
             </div>
             
             <div className="mt-12 flex items-center gap-8 text-slate-500 text-sm font-medium">
@@ -532,13 +557,99 @@ export default function IndexNavy() {
               Let's build something exceptional together. Schedule your free consultation today.
             </p>
             <div className="relative z-10">
-              <Button className="bg-white text-blue-600 hover:bg-slate-100 hover:text-blue-700 mx-auto text-lg px-12 py-5 shadow-xl">
+              <Button
+                className="bg-white text-blue-600 hover:bg-slate-100 hover:text-blue-700 mx-auto text-lg px-12 py-5 shadow-xl"
+                onClick={() => setIsContactModalOpen(true)}
+              >
                 Get Started Now
               </Button>
             </div>
           </div>
         </div>
       </section>
+
+      <AnimatePresence>
+        {isContactModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm flex items-center justify-center px-6"
+            onClick={() => setIsContactModalOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 12 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-xl bg-slate-900 border border-slate-700 rounded-3xl p-8 shadow-2xl"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="flex items-start justify-between gap-4 mb-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-white">Get Started</h3>
+                  <p className="text-slate-400 mt-2">Choose your preferred contact channel.</p>
+                </div>
+                <button
+                  onClick={() => setIsContactModalOpen(false)}
+                  className="text-slate-400 hover:text-white transition-colors"
+                  aria-label="Close contact options"
+                >
+                  <X size={22} />
+                </button>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <a href="https://wa.me/27655253491" target="_blank" rel="noopener noreferrer">
+                  <Button variant="secondary" className="w-full !rounded-xl !py-3 !px-4 !justify-start !text-green-400 !border-green-500/50 hover:!text-green-300 hover:!border-green-400 hover:!bg-green-500/10">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" className="w-5 h-5 fill-current">
+                        <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.48 0 .12 5.36.12 11.94c0 2.1.55 4.15 1.6 5.96L0 24l6.3-1.65a11.92 11.92 0 0 0 5.76 1.47h.01c6.58 0 11.94-5.36 11.94-11.94 0-3.19-1.24-6.19-3.49-8.4Zm-8.45 18.33h-.01a9.92 9.92 0 0 1-5.05-1.38l-.36-.21-3.74.98 1-3.64-.24-.37a9.9 9.9 0 0 1-1.53-5.25c0-5.49 4.47-9.95 9.96-9.95 2.66 0 5.16 1.03 7.04 2.91a9.9 9.9 0 0 1 2.92 7.04c0 5.49-4.47 9.95-9.99 9.95Zm5.46-7.46c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.66.15-.2.3-.76.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.24-.46-2.37-1.46-.88-.78-1.48-1.74-1.65-2.03-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.07-.15-.66-1.58-.9-2.17-.24-.57-.48-.5-.66-.51h-.57c-.2 0-.52.07-.79.38-.27.3-1.04 1.01-1.04 2.46s1.06 2.86 1.21 3.06c.15.2 2.08 3.18 5.03 4.46.7.3 1.24.48 1.66.62.7.22 1.34.19 1.85.11.56-.08 1.77-.72 2.02-1.41.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35Z" />
+                      </svg>
+                    </span>
+                    WhatsApp
+                  </Button>
+                </a>
+
+                <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                  <Button variant="secondary" className="w-full !rounded-xl !py-3 !px-4 !justify-start !text-blue-400 !border-blue-500/50 hover:!text-blue-300 hover:!border-blue-400 hover:!bg-blue-500/10">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-600 text-white">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" className="w-5 h-5 fill-current">
+                        <path d="M13.5 9H16V6h-2.5C10.46 6 9 7.79 9 10.48V13H7v3h2v8h3v-8h3l1-3h-4v-2.35C12 9.54 12.43 9 13.5 9Z" />
+                      </svg>
+                    </span>
+                    Facebook
+                  </Button>
+                </a>
+
+                <a href="mailto:hello@waptechsa.co.za">
+                  <Button variant="secondary" className="w-full !rounded-xl !py-3 !px-4 !justify-start !text-red-400 !border-red-500/50 hover:!text-red-300 hover:!border-red-400 hover:!bg-red-500/10">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" className="w-5 h-5">
+                        <path fill="#EA4335" d="M22 6.5V18a2 2 0 0 1-2 2h-1V9.75L12 14.5 5 9.75V20H4a2 2 0 0 1-2-2V6.5l10 6.75L22 6.5Z"/>
+                        <path fill="#34A853" d="M2 6.5V18a2 2 0 0 0 2 2h1V9.75L2 6.5Z"/>
+                        <path fill="#4285F4" d="M22 6.5V18a2 2 0 0 1-2 2h-1V9.75l3-3.25Z"/>
+                        <path fill="#FBBC04" d="M22 6.5 12 13.25 2 6.5A2 2 0 0 1 4 4h16a2 2 0 0 1 2 2.5Z"/>
+                      </svg>
+                    </span>
+                    Email
+                  </Button>
+                </a>
+
+                <a href="tel:+27655253491">
+                  <Button variant="primary" className="w-full !rounded-xl !py-3 !px-4 !justify-start">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/20 text-white">
+                      <Phone size={18} />
+                    </span>
+                    Call 0655253491
+                  </Button>
+                </a>
+              </div>
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Footer */}
       <footer className="bg-slate-950 pt-24 pb-12 border-t border-slate-900">
@@ -561,8 +672,8 @@ export default function IndexNavy() {
             <div>
               <h4 className="text-white font-bold mb-8">Quick Links</h4>
               <ul className="flex flex-col gap-4 text-slate-500">
-                {["Home", "About Us", "Services", "Portfolio", "Contact"].map(item => (
-                  <li key={item}><a href="#" className="hover:text-blue-400 transition-colors">{item}</a></li>
+                {quickLinks.map((item) => (
+                  <li key={item.name}><a href={item.href} className="hover:text-blue-400 transition-colors">{item.name}</a></li>
                 ))}
               </ul>
             </div>
