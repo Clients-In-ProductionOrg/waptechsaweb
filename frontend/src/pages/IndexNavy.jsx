@@ -27,6 +27,7 @@ import defenceImg from "../assets/TeamImages/Defence2.jpeg";
 import goodnessImg from "../assets/TeamImages/Goodness Jakaza Chauke.jpeg";
 import trustImg from "../assets/TeamImages/Trust Nyoni .jpeg";
 import mmaphokengImg from "../assets/TeamImages/Mmaphokeng Senne(IT Sales).jpg";
+import teamLeaderImg from "../assets/TeamImages/TeamLeader.png";
 
 import knitImg from "../assets/Projects/knit-logo.png";
 import enashysImg from "../assets/Projects/Ebslogo.png";
@@ -183,6 +184,22 @@ export default function IndexNavy() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [activeTeamIndex, setActiveTeamIndex] = useState(0);
+
+  const teamMembers = [
+    { name: "Team Leader", role: "Senior Project Manager", img: teamLeaderImg, align: "object-top" },
+    { name: "Mmaphokeng Senne", role: "IT Sales", img: mmaphokengImg, align: "object-[center_20%]" },
+    { name: "Defence Ndzhobela", role: "Full Stack Developer", img: defenceImg, align: "object-center" },
+    { name: "Trust Nyoni", role: "Business Analyst", img: trustImg, align: "object-top" },
+    { name: "Goodness Jakaza Chauke", role: "Software Engineer", img: goodnessImg, align: "object-center" }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveTeamIndex((prev) => (prev + 1) % teamMembers.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -345,7 +362,7 @@ export default function IndexNavy() {
                   className="relative rounded-3xl shadow-2xl border border-slate-700 w-full object-cover h-[500px]"
                 />
                 <div className="absolute -bottom-10 -right-10 bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-xl hidden lg:block">
-                  <div className="text-4xl font-bold text-blue-500 mb-1">10+</div>
+                  <div className="text-4xl font-bold text-blue-500 mb-1">6</div>
                   <div className="text-slate-400 text-sm uppercase tracking-wider">Years Experience</div>
                 </div>
              </div>
@@ -478,32 +495,47 @@ export default function IndexNavy() {
         <div className="container mx-auto px-6">
           <SectionData title="Meet The Team" subtitle="The brilliant minds behind our innovative solutions." />
           
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { name: "Mmaphokeng Senne", role: "IT Sales", img: mmaphokengImg, align: "object-[center_20%]" },
-              { name: "Defence Ndzhobela", role: "Full Stack Developer", img: defenceImg, align: "object-center" },
-              { name: "Trust Nyoni", role: "Business Analyst", img: trustImg, align: "object-top" },
-              { name: "Goodness Jakaza Chauke", role: "Software Engineer", img: goodnessImg, align: "object-center" }
-            ].map((member, i) => (
-              <motion.div 
-                key={i}
-                whileHover={{ y: -10 }}
-                className="group relative bg-slate-800 rounded-3xl overflow-hidden border border-slate-700 hover:border-blue-500/50 transition-all duration-300"
-              >
-                <div className="h-72 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-blue-900/20 group-hover:bg-transparent transition-colors z-10" />
-                  <img 
-                    src={member.img} 
-                    alt={member.name} 
-                    className={`w-full h-full object-cover ${member.align} transform group-hover:scale-105 transition-transform duration-700`} 
-                  />
-                </div>
-                <div className="p-6 text-center relative z-20 bg-slate-800">
-                  <h3 className="text-xl font-bold text-white mb-2">{member.name}</h3>
-                  <p className="text-blue-400 font-medium">{member.role}</p>
-                </div>
-              </motion.div>
-            ))}
+          <div className="flex flex-col md:flex-row gap-4 h-[600px] md:h-[500px] w-full max-w-7xl mx-auto px-2 md:px-0 onHover:pause-animation">
+             {teamMembers.map((member, i) => {
+               const isActive = activeTeamIndex === i;
+               return (
+                 <div
+                   key={i}
+                   className={`relative rounded-[2rem] overflow-hidden cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                     isActive ? "flex-[5] shadow-[0_0_30px_rgba(56,189,248,0.3)] border border-blue-500/30" : "flex-[1] hover:flex-[1.5] border border-white/5 bg-slate-800"
+                   }`}
+                   onClick={() => setActiveTeamIndex(i)}
+                   onMouseEnter={() => setActiveTeamIndex(i)} // Optional: Hover triggers open
+                 >
+                   <img
+                     src={member.img}
+                     alt={member.name}
+                     className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${
+                       isActive ? "scale-100 filter-none" : "scale-[1.5] grayscale opacity-40"
+                     } ${member.align}`}
+                   />
+                   
+                   {/* Gradient Overlay */}
+                   <div className={`absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/40 to-transparent transition-opacity duration-500 ${isActive ? 'opacity-90' : 'opacity-60'}`} />
+ 
+                   {/* Text Content */}
+                   <div className={`absolute bottom-0 left-0 w-full p-6 md:p-8 transition-all duration-500 transform ${isActive ? 'opacity-100 translate-y-0 delay-100' : 'opacity-0 translate-y-8 absolute'}`}>
+                       <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 leading-tight">{member.name}</h3>
+                       <div className="h-1 w-12 bg-blue-500 mb-3 rounded-full"/>
+                       <p className="text-blue-300 font-medium text-sm md:text-lg tracking-wide uppercase">{member.role}</p>
+                   </div>
+ 
+                   {/* Vertical Label for Inactive (Desktop only) */}
+                   {!isActive && (
+                     <div className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 w-full justify-center items-center">
+                        <span className="text-white/60 text-xs font-mono font-bold tracking-widest uppercase rotate-180" style={{ writingMode: 'vertical-rl' }}>
+                          {member.role.split(" ")[0]}
+                        </span>
+                     </div>
+                   )}
+                 </div>
+               );
+             })}
           </div>
         </div>
       </section>
@@ -519,7 +551,7 @@ export default function IndexNavy() {
           
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: "Sarah Johnson", role: "CEO, TechFlow", text: "WapTech transformed our outdated legacy system into a sleek, modern web platform. The ROI was immediate." },
+              { name: "Cedric Munyai", role: "Cedric House Plans", text: "WapTech helped us launch a modern house plans platform that is fast, professional, and easy for clients to use." },
               { name: "David Chen", role: "CTO, StartScale", text: "Their attention to detail and code quality is unmatched in the industry. A true partner in our growth." },
               { name: "Amanda Williams", role: "Director, CreativeHub", text: "From design to deployment, the process was seamless. They understood our brand voice perfectly." }
             ].map((t, i) => (
